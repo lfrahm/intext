@@ -24,7 +24,7 @@ Use the `dictnry` file to extract information from the DICTNRY (`F10`) file. The
 
 If you have the DICTNRY (`.F10`) file and you want to extract the content number X, simply run
 
-    $ ./dictnry your_file.F10
+    $ ./dictnry your_file.F10 X
       Expecting N records in given file
       Stored result in file ./dictnry_X.dat 
 
