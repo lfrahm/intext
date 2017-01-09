@@ -1,22 +1,36 @@
-program bsp
+program aoints
+
+  character(len=256) :: ifname
+  character(len=256) :: ofname
   integer :: istat
 
   integer*8 :: max
   integer*8 :: nx
   integer*8, allocatable :: ix(:)
   real*8, allocatable :: xx(:)
+  integer*8 :: intcount
 
-  open(unit=100, file="./co_scf.F08", status='unknown', access='sequential', form='unformatted', iostat=istat)
+  call getarg(1, ifname)
+
+  open(unit=100, file=ifname, status='unknown', access='sequential', form='unformatted', iostat=istat)
+  if (istat .ne. 0) then
+    print *, 'Could not open file, ', ifname
+  end if
+
+  write(ofname, *) irec
+  ofname = "./aoints.dat"
+  open(unit=102, file=ofname, status='unknown', iostat=istat)
 
   read (100) max
   max = abs(max)
 
   rewind (100)
 
-  do k = 1, 2
+  intcount = 0
+  do
     allocate(xx(max))
     allocate(ix(max/2))
-    read (100) nx, ix, xx
+    read (100, end=300) nx, ix, xx
     nx = abs(nx)
     do i = 1, nx/2 + 1
       fac = 1.0
@@ -29,7 +43,8 @@ program bsp
       if (k1 .eq. l1) fac = fac * 2
       if ((i1 .eq. k1) .and. (j1 .eq. l1)) fac = fac * 2
 
-      print *, i1, j1, k1, l1, xx(2*i-1)*fac, fac, i
+      write (102, *) i1, j1, k1, l1, xx(2*i-1)*fac, fac, i
+      intcount = intcount + 1
 
       i2 = ibits(ix(i), 24, 8)
       j2 = ibits(ix(i), 16, 8)
@@ -41,10 +56,18 @@ program bsp
       if (k2 .eq. l2) fac = fac * 2
       if ((i2 .eq. k2) .and. (j2 .eq. l2)) fac = fac * 2
 
-      print *, i2, j2, k2, l2, xx(2*i)*fac, fac, i
+      write (102, *) i2, j2, k2, l2, xx(2*i)*fac, fac, i
+      intcount = intcount + 1
+
+      910 format ('Stored result in file ', A20)
     end do 
+    if (allocated(xx)) deallocate(xx)
+    if (allocated(ix)) deallocate(ix)
+  end do
+  300 continue
   if (allocated(xx)) deallocate(xx)
   if (allocated(ix)) deallocate(ix)
-  end do
+  close(102)
+  print *, intcount, ' unique integrals found'
 
-end program bsp
+end program aoints

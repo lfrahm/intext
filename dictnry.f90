@@ -1,4 +1,4 @@
-program dict
+program dictnry
 
   integer*8 :: istat
 
@@ -17,8 +17,8 @@ program dict
   character(len=32) :: irecchars
   integer irec
 
-  CALL getarg(1, ifname)
-  CALL getarg(2, irecchars)
+  call getarg(1, ifname)
+  call getarg(2, irecchars)
 
   read (irecchars,*) irec
 
@@ -52,7 +52,7 @@ program dict
     read (101, rec=ioda(irec)) xx
 
     write(ofname, *) irec
-    ofname = "./dict_" // trim(adjustl(ofname)) // ".dat"
+    ofname = "./dictnry_" // trim(adjustl(ofname)) // ".dat"
 
     open(unit=102, file=ofname, status='unknown', iostat=istat)
     write(102,*) xx
@@ -67,4 +67,4 @@ program dict
     print *, irec, ' is not in given F10 file.'
   end if
 
-end program dict
+end program dictnry
