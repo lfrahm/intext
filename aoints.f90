@@ -3,6 +3,7 @@ program aoints
   character(len=256) :: ifname
   character(len=256) :: ofname
   integer :: istat
+  integer*8 :: fsize
 
   integer*8 :: max
   integer*8 :: nx
@@ -17,7 +18,6 @@ program aoints
     print *, 'Could not open file, ', ifname
   end if
 
-  write(ofname, *) irec
   ofname = "./aoints.dat"
   open(unit=102, file=ofname, status='unknown', iostat=istat)
 
@@ -43,7 +43,7 @@ program aoints
       if (k1 .eq. l1) fac = fac * 2
       if ((i1 .eq. k1) .and. (j1 .eq. l1)) fac = fac * 2
 
-      write (102, *) i1, j1, k1, l1, xx(2*i-1)*fac, fac, i
+      write (102, 920) i1, j1, k1, l1, xx(2*i-1)*fac
       intcount = intcount + 1
 
       i2 = ibits(ix(i), 24, 8)
@@ -56,10 +56,11 @@ program aoints
       if (k2 .eq. l2) fac = fac * 2
       if ((i2 .eq. k2) .and. (j2 .eq. l2)) fac = fac * 2
 
-      write (102, *) i2, j2, k2, l2, xx(2*i)*fac, fac, i
+      write (102, 920) i2, j2, k2, l2, xx(2*i)*fac
       intcount = intcount + 1
 
       910 format ('Stored result in file ', A20)
+      920 format ('',I5,I5,I5,I5,E25.13)
     end do 
     if (allocated(xx)) deallocate(xx)
     if (allocated(ix)) deallocate(ix)
