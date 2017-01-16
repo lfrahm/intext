@@ -15,7 +15,7 @@ If you have the AOINTS (`.F08`) file, simply run
 
     $ ./aoints your_file.F08
       28697 unique integrals found
-      Stored integrals in file ./dictnry_X.dat 
+      Stored integrals in file ./aoints.dat 
 
 You will find the printed integrals in the corresponding `./aoints.dat` file. 
 
