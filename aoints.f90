@@ -22,16 +22,17 @@ program aoints
   open(unit=102, file=ofname, status='unknown', iostat=istat)
 
   read (100) max
-  max = abs(max)
-
+  max = 15000
   rewind (100)
 
   intcount = 0
   do
     allocate(xx(max))
-    allocate(ix(max/2))
+    allocate(ix(max / 2))
     read (100, end=300) nx, ix, xx
+    print *, nx
     nx = abs(nx)
+
     do i = 1, nx/2 + 1
       fac = 1.0
       i1 = ibits(ix(i), 56, 8)
@@ -42,7 +43,7 @@ program aoints
       if (i1 .eq. j1) fac = fac * 2
       if (k1 .eq. l1) fac = fac * 2
       if ((i1 .eq. k1) .and. (j1 .eq. l1)) fac = fac * 2
-
+      print *, xx(2*i-1)
       write (102, 920) i1, j1, k1, l1, xx(2*i-1)*fac
       intcount = intcount + 1
 
