@@ -28,11 +28,9 @@ program aoints
   intcount = 0
   do
     allocate(xx(max))
-    allocate(ix(max / 2))
+    allocate(ix(max/2))
     read (100, end=300) nx, ix, xx
-    print *, nx
     nx = abs(nx)
-
     do i = 1, nx/2 + 1
       fac = 1.0
       i1 = ibits(ix(i), 56, 8)
